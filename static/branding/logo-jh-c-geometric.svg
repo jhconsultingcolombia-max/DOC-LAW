@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="JH Consulting geometric">
+  <rect width="120" height="120" rx="28" fill="#1A2332"/>
+  <path d="M32 36 L60 24 L88 36 L88 84 L60 96 L32 84 Z" fill="none" stroke="#3B82F6" stroke-width="2.2"/>
+  <path d="M44 48 H76 M44 60 H76 M44 72 H64" stroke="#64748B" stroke-width="2" stroke-linecap="round"/>
+  <text x="60" y="58" text-anchor="middle" font-family="Segoe UI, system-ui, sans-serif" font-size="28" font-weight="800" fill="#F1F5F9" letter-spacing="-1">JH</text>
+  <text x="60" y="78" text-anchor="middle" font-family="Segoe UI, system-ui, sans-serif" font-size="8" font-weight="600" fill="#3B82F6" letter-spacing="2.4">CONSULTING</text>
+</svg>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Notificaciones — DOC_LAW · {{ caso.case_id }}</title>
+  <link rel="stylesheet" href="{{ legal_base }}/static/legal.css" />
+</head>
+<body>
+  {% from "partials/brand_macros.html" import jh_mark, doc_law_label %}
+  <header class="topbar topbar-brand">
+    <div class="topbar-left">
+      <div class="topbar-brand-stack">
+        {{ doc_law_label() }}
+        <strong>Notificaciones</strong>
+        <span class="muted">{{ caso.titulo }} · {{ caso.case_id }}</span>
+      </div>
+    </div>
+    {{ jh_mark(36, 36, base=legal_base) }}
+    <nav class="topbar-nav">
+      <a href="{{ legal_base }}/caso/{{ caso.case_id }}" class="btn btn-ghost">Editar</a>
+      <a href="{{ legal_base }}/caso/{{ caso.case_id }}/proceso" class="btn btn-ghost">Proceso</a>
+      <a href="{{ legal_base }}/caso/{{ caso.case_id }}/analisis" class="btn btn-ghost">Análisis IA</a>
+      <a href="{{ legal_base }}/dashboard" class="btn btn-ghost">Panel</a>
+    </nav>
+  </header>
+
+  <main class="container notificaciones-page">
+    <section class="notif-panel notif-panel-send">
+      <h2>Enviar notificación</h2>
+      <form id="notif-form" class="notif-form">
+        <label>Para (correo electrónico)
+          <input type="email" id="notif-para" required />
+        </label>
+        <label>Asunto
+          <input type="text" id="notif-asunto" required value="{{ asunto_sugerido }}" />
+        </label>
+
+        <label>Mensaje
+          <textarea id="notif-cuerpo" class="notif-cuerpo-editor" rows="22" required>{{ mensaje_precargado }}</textarea>
+        </label>
+
+        <fieldset class="notif-adjunto-fieldset">
+          <legend>Adjuntar archivo (opcional)</legend>
+          <div class="upload-zone notif-upload-zone" id="notif-upload-zone" tabindex="0" role="button" aria-label="Subir archivo desde su PC">
+            <input type="file" id="notif-adjunto" class="notif-adjunto-input" />
+            <p class="notif-upload-lead">Arrastre un archivo aquí o</p>
+            <button type="button" class="btn btn-secondary btn-sm" id="notif-pick-file">Elegir archivo en este PC</button>
+          </div>
+          <p id="notif-adjunto-nombre" class="notif-adjunto-nombre hidden" aria-live="polite"></p>
+          <details class="notif-doc-caso-details">
+            <summary>O usar un documento ya cargado en el caso</summary>
+            <label class="notif-doc-caso-label">Documento del caso
+              <select id="notif-doc-caso">
+                <option value="">— Ninguno —</option>
+              </select>
+            </label>
+          </details>
+        </fieldset>
+
+        <button type="submit" class="btn btn-primary" id="notif-submit">Enviar notificación</button>
+        <p id="notif-form-msg" class="notif-form-msg muted"></p>
+      </form>
+    </section>
+
+    <section class="notif-panel notif-panel-sent">
+      <div class="notif-sent-head">
+        <div><h2>Notificaciones enviadas</h2></div>
+        <button type="button" class="btn btn-secondary btn-sm" id="btn-refresh-notif-list">Actualizar</button>
+      </div>
+      <div id="notif-summary" class="notif-summary muted"></div>
+      <div class="notif-filters" role="group" aria-label="Filtrar notificaciones">
+        <button type="button" class="notif-filter is-active" data-filter="todas">Todas</button>
+        <button type="button" class="notif-filter" data-filter="llegaron">Enviadas OK</button>
+        <button type="button" class="notif-filter" data-filter="no_llegaron">Error SMTP</button>
+        <button type="button" class="notif-filter" data-filter="abiertas">Con apertura</button>
+        <button type="button" class="notif-filter" data-filter="sin_abrir">Sin apertura</button>
+      </div>
+      <div class="table-wrap">
+        <table class="notif-table" id="notif-table">
+          <thead>
+            <tr>
+              <th>Enviado</th>
+              <th>Para</th>
+              <th>Asunto</th>
+              <th>Envío SMTP</th>
+              <th>Apertura</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="notif-list">
+            <tr><td colspan="6" class="muted">Cargando…</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="notif-detail" class="notif-detail hidden"></div>
+    </section>
+  </main>
+
+  <script>
+    window.CASO_ID = {{ caso.case_id | tojson }};
+  </script>
+  {% include "partials/legal_assets.html" %}
+  <script src="{{ legal_base }}/static/caso_notificaciones.js?v=20260930c"></script>
+</body>
+</html>

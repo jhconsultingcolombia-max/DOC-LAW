@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Administración — DOC_LAW</title>
+  <link rel="stylesheet" href="{{ legal_base }}/static/legal.css" />
+</head>
+<body>
+  {% from "partials/brand_macros.html" import jh_mark, doc_law_label %}
+  <header class="topbar topbar-brand">
+    <div class="topbar-left">
+      <div class="topbar-brand-stack">
+        {{ doc_law_label() }}
+        <strong>Administración de usuarios</strong>
+        <span class="muted">{{ despacho }}</span>
+      </div>
+    </div>
+    {{ jh_mark(36, 36, base=legal_base) }}
+    <nav class="topbar-nav">
+      <a href="{{ legal_base }}/dashboard" class="btn btn-ghost">Panel</a>
+      <a href="{{ legal_base }}/logout" class="btn btn-ghost">Salir</a>
+    </nav>
+  </header>
+
+  <main class="container admin-page">
+    <section class="notif-panel">
+      <div class="notif-sent-head">
+        <div>
+          <h2>Usuarios</h2>
+          <p class="muted">Límite de casos, tokens de IA usados y permisos de administrador.</p>
+        </div>
+        <button type="button" class="btn btn-secondary btn-sm" id="btn-admin-refresh">Actualizar</button>
+      </div>
+
+      <form id="admin-new-user" class="admin-new-user">
+        <h3>Nuevo usuario</h3>
+        <div class="admin-form-grid">
+          <label>Usuario <input type="text" id="new-usuario" required /></label>
+          <label>Contraseña <input type="password" id="new-clave" required /></label>
+          <label>Despacho <input type="text" id="new-despacho" placeholder="Despacho … — JH consulting" /></label>
+          <label>Máx. casos <input type="number" id="new-max-casos" min="0" placeholder="Vacío = sin límite" /></label>
+          <label class="admin-check"><input type="checkbox" id="new-admin" /> Administrador</label>
+        </div>
+        <button type="submit" class="btn btn-primary btn-sm">Crear usuario</button>
+        <p id="admin-new-msg" class="notif-form-msg muted"></p>
+      </form>
+
+      <div class="table-wrap">
+        <table class="notif-table admin-table" id="admin-users-table">
+          <thead>
+            <tr>
+              <th>Usuario</th>
+              <th>Despacho</th>
+              <th>Casos</th>
+              <th>Máx. casos</th>
+              <th>Tokens IA</th>
+              <th>Admin</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="admin-users-body">
+            <tr><td colspan="7" class="muted">Cargando…</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p id="admin-global-msg" class="notif-form-msg muted"></p>
+    </section>
+  </main>
+
+  {% include "partials/legal_assets.html" %}
+  <script src="{{ legal_base }}/static/admin.js"></script>
+</body>
+</html>

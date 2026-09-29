@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Panel — DOC_LAW</title>
+  <link rel="stylesheet" href="{{ legal_base }}/static/legal.css" />
+</head>
+<body>
+  {% from "partials/brand_macros.html" import jh_mark, doc_law_label %}
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="topbar-brand-stack">
+        {{ doc_law_label() }}
+        <strong>{{ despacho }}</strong>
+        <span class="muted">{{ usuario }}</span>
+      </div>
+    </div>
+    {{ jh_mark(36, 36, base=legal_base) }}
+    <nav class="topbar-nav">
+      {% if is_admin %}<a href="{{ legal_base }}/admin" class="btn btn-ghost">Administración</a>{% endif %}
+      <a href="{{ legal_base }}/chat" class="btn btn-secondary">Chat legal</a>
+      <a href="{{ legal_base }}/caso/nuevo" class="btn btn-primary">+ Nuevo caso</a>
+      <a href="{{ legal_base }}/logout" class="btn btn-ghost">Salir</a>
+    </nav>
+  </header>
+
+  <div id="radicados-bar" class="radicados-alerta" role="region" aria-label="Radicados judiciales">
+    <div id="radicados-alerta" class="radicados-alerta-pill hidden" role="status">
+      <button type="button" id="radicados-alerta-btn" class="radicados-alerta-inner">
+        <span class="radicados-alerta-badge" id="radicados-alerta-count">0</span>
+        <span id="radicados-alerta-text">Actuaciones judiciales sin leer</span>
+      </button>
+    </div>
+    <button
+      type="button"
+      id="btn-refresh-radicados-dashboard"
+      class="btn btn-ghost btn-icon radicados-refresh-btn"
+      title="Refrescar radicados"
+      aria-label="Refrescar radicados"
+    >
+      ↻
+    </button>
+    <span id="radicados-sync-msg" class="muted radicados-sync-msg"></span>
+  </div>
+
+  <main class="container">
+    <section class="hero-panel">
+      <h2>Expedientes recientes</h2>
+      <p>Intake automatizado: hechos, partes, viabilidad y borrador de comunicación.</p>
+    </section>
+
+    {% if cases %}
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Título</th>
+            <th>Rama</th>
+            <th>Estado</th>
+            <th>Creado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for c in cases %}
+          <tr>
+            <td><code>{{ c.case_id }}</code></td>
+            <td>{{ c.titulo or '—' }}</td>
+            <td>{{ c.rama_nombre or c.rama_id or '—' }}</td>
+            <td><span class="badge">{{ c.estado }}</span></td>
+            <td class="muted">{{ c.creado[:10] if c.creado else '—' }}</td>
+            <td class="actions-cell">
+              <a href="{{ legal_base }}/caso/{{ c.case_id }}" class="btn btn-ghost btn-sm">Editar</a>
+              <a href="{{ legal_base }}/caso/{{ c.case_id }}/notificaciones" class="btn btn-secondary btn-sm">Notificaciones</a>
+              <a href="{{ legal_base }}/caso/{{ c.case_id }}/proceso" class="btn btn-secondary btn-sm">Proceso</a>
+              <a href="{{ legal_base }}/caso/{{ c.case_id }}/analisis" class="btn btn-primary btn-sm">Análisis IA</a>
+              <a href="{{ legal_base }}/caso/{{ c.case_id }}/informe.docx" class="btn btn-secondary btn-sm">Word</a>
+              <button
+                type="button"
+                class="btn btn-ghost btn-sm btn-danger btn-delete-case"
+                data-case-id="{{ c.case_id }}"
+                data-case-title="{{ (c.titulo or c.case_id) | e }}"
+              >
+                Eliminar
+              </button>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <div class="empty-state">
+      <h3>Sin casos aún</h3>
+      <p>Crea el primer expediente con el asistente de intake.</p>
+      <a href="{{ legal_base }}/caso/nuevo" class="btn btn-primary">Iniciar intake</a>
+    </div>
+    {% endif %}
+  </main>
+  {% include "partials/legal_assets.html" %}
+  <script src="{{ legal_base }}/static/dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Proceso judicial — {{ caso.case_id }}</title>
+  <link rel="stylesheet" href="{{ legal_base }}/static/legal.css" />
+</head>
+<body>
+  {% from "partials/brand_macros.html" import jh_mark, doc_law_label %}
+  <header class="topbar topbar-brand">
+    <div class="topbar-left">
+      <div class="topbar-brand-stack">
+        {{ doc_law_label() }}
+        <strong>Proceso judicial</strong>
+        <span class="muted">{{ caso.titulo }} · {{ caso.case_id }}</span>
+      </div>
+    </div>
+    {{ jh_mark(36, 36, base=legal_base) }}
+    <nav class="topbar-nav">
+      <a href="{{ legal_base }}/caso/{{ caso.case_id }}" class="btn btn-ghost">Editar</a>
+      <a href="{{ legal_base }}/caso/{{ caso.case_id }}/analisis" class="btn btn-ghost">Análisis IA</a>
+      <a href="{{ legal_base }}/chat?caso={{ caso.case_id }}" class="btn btn-ghost">Chat legal</a>
+      <a href="{{ legal_base }}/dashboard" class="btn btn-ghost">Panel</a>
+    </nav>
+  </header>
+
+  <main class="container edit-layout">
+    <aside class="edit-sidebar">
+      <div class="info-box">
+        <strong>Radicados CPNU</strong>
+        <p class="muted">Consulta oficial: <a href="https://consultaprocesos.ramajudicial.gov.co/Procesos/NumeroRadicacion" target="_blank" rel="noopener">Rama Judicial</a></p>
+        <label>Nuevo radicado (23 dígitos)
+          <input id="radicado-input" type="text" placeholder="05001400303420240103100" />
+        </label>
+        <button type="button" class="btn btn-primary btn-block" id="btn-add-radicado">Agregar radicado</button>
+        <button type="button" class="btn btn-secondary btn-block" id="btn-refresh-radicados">Actualizar radicados</button>
+      </div>
+    </aside>
+
+    <section class="wizard-panel">
+      <div id="proceso-panel-actuaciones">
+        <h2>Radicados del caso</h2>
+        <p class="muted">Use el ojito en un radicado para ver sus documentos aquí. <strong>Abrir en CPNU</strong> abre la consulta oficial en otra pestaña.</p>
+        <div id="radicados-list" class="radicados-list"></div>
+      </div>
+
+      <div id="proceso-inline-viewer" class="proceso-inline-viewer hidden" aria-live="polite">
+        <header class="proceso-inline-viewer-head">
+          <div>
+            <h2 id="inline-viewer-title">Documento</h2>
+            <p id="inline-viewer-radicado" class="inline-viewer-radicado muted hidden"></p>
+            <p id="inline-viewer-caption" class="muted"></p>
+          </div>
+          <div class="proceso-inline-viewer-actions">
+            <button type="button" class="btn btn-secondary btn-sm" id="btn-download-pdf" disabled title="Descargar el PDF visible">Descargar PDF</button>
+            <button type="button" class="btn btn-ghost btn-sm" id="btn-close-inline-viewer">Cerrar vista</button>
+          </div>
+        </header>
+        <div id="inline-pdf-wrap" class="hidden">
+          <div class="pdf-viewer-layout">
+            <ul id="pdf-doc-list" class="pdf-doc-list muted"></ul>
+            <div class="pdf-viewer-frame-wrap">
+              <iframe id="pdf-viewer-frame" title="Visor PDF" class="pdf-viewer-frame"></iframe>
+              <p id="pdf-viewer-empty" class="muted pdf-viewer-empty">Seleccione un documento.</p>
+            </div>
+          </div>
+        </div>
+        <div id="inline-cpnu-wrap" class="hidden">
+          <p id="cpnu-embed-caption" class="muted"></p>
+          <iframe id="cpnu-embed-frame" title="CPNU" class="cpnu-embed-frame"></iframe>
+        </div>
+      </div>
+
+      <h2 style="margin-top:28px">Piezas procesales</h2>
+      <p class="muted">Demanda, poder, pruebas y memoriales cargados al expediente.</p>
+
+      {% for label, tipo in [('Demanda','demanda'), ('Poder','poder'), ('Pruebas','pruebas'), ('Memoriales','memorial')] %}
+      <div class="litigacion-block">
+        <div class="litigacion-head">
+          <h3>{{ label }}</h3>
+          <label class="btn btn-secondary btn-sm upload-lit-btn">
+            Subir
+            <input type="file" hidden data-tipo="{{ tipo }}" class="lit-file-input" />
+          </label>
+        </div>
+        <ul class="uploaded-list" id="docs-{{ tipo }}"></ul>
+      </div>
+      {% endfor %}
+    </section>
+  </main>
+
+  <script>
+    window.CASO_ID = {{ caso.case_id | tojson }};
+    window.CASO_DATA = {{ caso | tojson }};
+    window.CPNU_URL = "https://consultaprocesos.ramajudicial.gov.co/Procesos/NumeroRadicacion";
+  </script>
+  {% include "partials/legal_assets.html" %}
+  <script src="{{ legal_base }}/static/caso_proceso.js"></script>
+</body>
+</html>

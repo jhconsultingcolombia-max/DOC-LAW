@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kit logo — JH Consulting</title>
+  <style>
+    :root {
+      --bg: #0f1419;
+      --card: #1a2332;
+      --border: #334155;
+      --muted: #94a3b8;
+      --gold: #c9a227;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", system-ui, sans-serif;
+      background: var(--bg);
+      color: #f1f5f9;
+      padding: 32px 24px 48px;
+    }
+    h1 { margin: 0 0 8px; font-size: 1.5rem; }
+    .lead { color: var(--muted); max-width: 720px; margin: 0 0 28px; line-height: 1.5; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      max-width: 1100px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+    }
+    .card h2 { margin: 0 0 4px; font-size: 1rem; }
+    .tag { font-size: 0.75rem; color: #64748b; margin-bottom: 14px; font-family: ui-monospace, monospace; }
+    .preview {
+      border-radius: 12px;
+      padding: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 160px;
+    }
+    .preview.dark { background: #2a3140; }
+    .preview.app { background: #0f1419; border: 1px solid var(--border); }
+    .preview.light { background: #f8fafc; }
+    .preview img, .preview svg { max-width: 100%; height: auto; }
+    .sizes { font-size: 0.8rem; color: var(--muted); margin-top: 12px; line-height: 1.5; }
+    code { color: #e2e8f0; font-size: 0.78rem; }
+    table {
+      width: 100%;
+      max-width: 1100px;
+      border-collapse: collapse;
+      margin-top: 32px;
+      font-size: 0.875rem;
+    }
+    th, td {
+      text-align: left;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    th { color: var(--muted); font-weight: 600; }
+  </style>
+</head>
+<body>
+  <h1>JH Consulting — kit de logo</h1>
+  <p class="lead">
+    Formatos listos para DOC_LAW, correos y presentaciones. Prioriza <strong>SVG</strong> en la app;
+    usa el <strong>PNG maestro</strong> cuando necesites raster fijo (PowerPoint, redes).
+  </p>
+
+  <div class="grid">
+    <article class="card">
+      <h2>1. Lockup cuadrado (original)</h2>
+      <div class="tag">logo-jh-consulting-lockup.svg · logo-jh-consulting-master.png</div>
+      <div class="preview dark">
+        <img src="logo-jh-consulting-lockup.svg" alt="Lockup JH Consulting" width="200" height="200" />
+      </div>
+      <p class="sizes">400×400 · portadas, avatar LinkedIn, slide de título.</p>
+    </article>
+
+    <article class="card">
+      <h2>2. Wordmark horizontal</h2>
+      <div class="tag">logo-jh-consulting-wordmark.svg</div>
+      <div class="preview app">
+        <img src="logo-jh-consulting-wordmark.svg" alt="Wordmark" width="220" height="110" />
+      </div>
+      <p class="sizes">240×120 · login, topbar, firma HTML (fondo oscuro).</p>
+    </article>
+
+    <article class="card">
+      <h2>3. Icono / favicon</h2>
+      <div class="tag">logo-jh-consulting-icon.svg</div>
+      <div class="preview dark">
+        <img src="logo-jh-consulting-icon.svg" alt="Icono JH" width="96" height="96" />
+      </div>
+      <p class="sizes">120×120 · esquina de barra, favicon, app icon.</p>
+    </article>
+
+    <article class="card">
+      <h2>4. PNG maestro (tu archivo)</h2>
+      <div class="tag">logo-jh-consulting-master.png</div>
+      <div class="preview dark">
+        <img src="logo-jh-consulting-master.png" alt="PNG maestro" width="200" height="200" style="object-fit:contain" />
+      </div>
+      <p class="sizes">Raster de referencia; no escalar mucho hacia arriba.</p>
+    </article>
+  </div>
+
+  <table>
+    <thead>
+      <tr><th>Uso</th><th>Archivo recomendado</th><th>Tamaño sugerido</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Barra DOC_LAW (icono)</td><td><code>logo-jh-consulting-icon.svg</code></td><td>36–48 px</td></tr>
+      <tr><td>Pantalla login</td><td><code>logo-jh-consulting-wordmark.svg</code></td><td>160–220 px ancho</td></tr>
+      <tr><td>Correo HTML (cabecera)</td><td><code>logo-jh-consulting-lockup.svg</code> o PNG maestro</td><td>120–160 px</td></tr>
+      <tr><td>Presentación / PDF</td><td><code>logo-jh-consulting-master.png</code></td><td>Original</td></tr>
+    </tbody>
+  </table>
+</body>
+</html>

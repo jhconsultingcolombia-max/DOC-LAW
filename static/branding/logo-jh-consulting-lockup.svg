@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="JH Consulting">
+  <!-- Lockup cuadrado (como imagen original): fondo + marca centrada -->
+  <rect width="400" height="400" fill="#2A3140"/>
+  <g transform="translate(0 28)">
+    <text
+      x="200"
+      y="168"
+      text-anchor="middle"
+      font-family="Georgia, 'Times New Roman', Times, serif"
+      font-size="88"
+      font-weight="700"
+      fill="#FFFFFF"
+    >JH</text>
+    <rect x="118" y="188" width="164" height="3" rx="1.5" fill="#C9A227"/>
+    <text
+      x="200"
+      y="248"
+      text-anchor="middle"
+      font-family="'Segoe UI', system-ui, -apple-system, sans-serif"
+      font-size="22"
+      font-weight="600"
+      fill="#FFFFFF"
+      letter-spacing="10"
+    >CONSULTING</text>
+  </g>
+</svg>

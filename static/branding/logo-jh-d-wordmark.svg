@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100" role="img" aria-label="JH Consulting">
+  <text
+    x="100"
+    y="46"
+    text-anchor="middle"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="44"
+    font-weight="700"
+    fill="#FFFFFF"
+  >JH</text>
+  <rect x="58" y="54" width="84" height="2.5" rx="1.25" fill="#C9A227"/>
+  <text
+    x="100"
+    y="78"
+    text-anchor="middle"
+    font-family="Segoe UI, system-ui, sans-serif"
+    font-size="13"
+    font-weight="600"
+    fill="#F1F5F9"
+    letter-spacing="5"
+  >CONSULTING</text>
+</svg>

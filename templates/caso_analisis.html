@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Análisis IA — {{ caso.case_id }}</title>
+  <link rel="stylesheet" href="{{ legal_base }}/static/legal.css" />
+</head>
+<body>
+  {% from "partials/brand_macros.html" import jh_mark, doc_law_label %}
+  <header class="topbar topbar-brand">
+    <div class="topbar-left">
+      <div class="topbar-brand-stack">
+        {{ doc_law_label() }}
+        <strong>Análisis con IA</strong>
+        <span class="muted">{{ caso.titulo }} · {{ caso.case_id }}</span>
+      </div>
+    </div>
+    {{ jh_mark(36, 36, base=legal_base) }}
+    <nav class="topbar-nav">
+      <a href="{{ legal_base }}/caso/{{ caso.case_id }}" class="btn btn-ghost">Editar</a>
+      <a href="{{ legal_base }}/caso/{{ caso.case_id }}/proceso" class="btn btn-ghost">Proceso</a>
+      <a href="{{ legal_base }}/chat?caso={{ caso.case_id }}" class="btn btn-primary">Chat legal</a>
+      <a href="{{ legal_base }}/dashboard" class="btn btn-ghost">Panel</a>
+      <a href="{{ legal_base }}/caso/{{ caso.case_id }}/informe.docx" class="btn btn-secondary">⬇ Word</a>
+    </nav>
+  </header>
+
+  <main class="container edit-layout">
+    <aside class="edit-sidebar">
+      <div class="info-box">
+        <strong>1. Subir documento legal</strong>
+        <p class="muted">Marco de trabajo, reglamento interno, contrato laboral.</p>
+        <label>Tipo de documento
+          <select id="doc-tipo">
+            <option value="marco_trabajo">Marco / Reglamento de trabajo</option>
+            <option value="reglamento">Políticas internas</option>
+            <option value="contrato">Contrato laboral</option>
+            <option value="general">Otro documento</option>
+          </select>
+        </label>
+        <div class="upload-zone upload-zone-sm" id="upload-zone">
+          <input type="file" id="file-input" accept=".pdf,.docx,.doc,.txt" hidden />
+          <p>PDF, Word o TXT</p>
+          <button type="button" class="btn btn-secondary btn-block" id="pick-files">Seleccionar archivo</button>
+        </div>
+        <ul id="uploaded-list" class="uploaded-list">
+          {% for d in (caso.documentos or []) %}
+          <li>📄 {{ d.name or d.path }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="info-box">
+        <strong>2. Ejecutar análisis</strong>
+        <p class="muted">La IA lee los documentos y contrasta con hechos y ley CO.</p>
+        <button type="button" class="btn btn-primary btn-block" id="btn-analizar-ia">Analizar documentos con IA</button>
+      </div>
+    </aside>
+
+    <section class="wizard-panel">
+      <h2>Resultado del análisis</h2>
+      <p class="muted">Solo lo generado por IA a partir de los documentos cargados. Datos del caso y documentos iniciales en «Editar».</p>
+      <div id="ia-panel" class="analysis-result">
+        {% set ai = caso.analisis_ia or {} %}
+        {% if ai.get('ia_disponible') %}
+          {% include "partials/analisis_ia.html" %}
+        {% elif ai.get('error') %}
+          <div class="alert alert-error">{{ ai.error }}</div>
+        {% else %}
+          <p class="muted">Suba el marco de trabajo y pulse «Analizar documentos con IA».</p>
+        {% endif %}
+      </div>
+      <div id="save-msg" class="alert hidden"></div>
+    </section>
+  </main>
+
+  <script>
+    window.CASE_ID = {{ caso.case_id | tojson }};
+    window.EMPRESA_ID = {{ (caso.empresa_id or '') | tojson }};
+    window.CLIENT_ID = {{ (caso.client_id or '') | tojson }};
+  </script>
+  {% include "partials/legal_assets.html" %}
+  <script src="{{ legal_base }}/static/caso_analisis.js"></script>
+</body>
+</html>

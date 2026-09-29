@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="JH Consulting monogram">
+  <defs>
+    <linearGradient id="bgA" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0B1F3A"/>
+      <stop offset="100%" stop-color="#152A4A"/>
+    </linearGradient>
+  </defs>
+  <rect width="120" height="120" rx="24" fill="url(#bgA)"/>
+  <circle cx="60" cy="60" r="44" fill="none" stroke="#C9A227" stroke-width="2.5" opacity="0.9"/>
+  <text x="60" y="58" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="42" font-weight="700" fill="#FFFFFF" letter-spacing="-2">JH</text>
+  <text x="60" y="82" text-anchor="middle" font-family="Segoe UI, system-ui, sans-serif" font-size="9" font-weight="600" fill="#C9A227" letter-spacing="3.2">CONSULTING</text>
+</svg>

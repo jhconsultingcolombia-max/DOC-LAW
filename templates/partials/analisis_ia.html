@@ -1,0 +1,55 @@
+{% set ai = ai if ai is defined else caso.analisis_ia %}
+{% if ai.get('documentos_analizados') %}
+<div class="analysis-card">
+  <h4>Documentos analizados</h4>
+  <ul>{% for d in ai.documentos_analizados %}<li>{{ d }}</li>{% endfor %}</ul>
+</div>
+{% endif %}
+<div class="analysis-card">
+  <h4>Resumen ejecutivo</h4>
+  <p>{{ ai.get('resumen_ejecutivo', '—') }}</p>
+</div>
+<div class="analysis-card">
+  <h4>Checklist documental</h4>
+  <ul>
+    {% for item in ai.get('checklist_documentos', []) %}
+    <li><strong>[{{ item.estado }}]</strong> {{ item.item }} — {{ item.evidencia }}</li>
+    {% endfor %}
+  </ul>
+</div>
+<div class="analysis-card">
+  <h4>Hallazgos en documentos</h4>
+  <ul>{% for x in ai.get('hallazgos_documentos', []) %}<li>{{ x }}</li>{% endfor %}</ul>
+</div>
+<div class="analysis-card pro">
+  <h4>A favor del cliente</h4>
+  <ul>{% for x in ai.get('a_favor_cliente', []) %}<li>{{ x }}</li>{% endfor %}</ul>
+</div>
+<div class="analysis-card con">
+  <h4>En contra / riesgos</h4>
+  <ul>{% for x in ai.get('en_contra_cliente', []) %}<li>{{ x }}</li>{% endfor %}</ul>
+</div>
+<div class="analysis-card">
+  <h4>Marco legal Colombia</h4>
+  <ul>
+    {% for n in ai.get('marco_legal_colombia', []) %}
+    <li><strong>{{ n.norma }}</strong> ({{ n.articulo_o_referencia }}): {{ n.aplicacion_al_caso }}</li>
+    {% endfor %}
+  </ul>
+</div>
+<div class="analysis-card">
+  <h4>Reglamento / marco de trabajo (empresa)</h4>
+  <ul>
+    {% for r in ai.get('reglamento_empresa', []) %}
+    <li>{{ r.documento }} — {{ r.clausula_o_politica }}: {{ r.aplicacion }}</li>
+    {% endfor %}
+  </ul>
+</div>
+<div class="analysis-card">
+  <h4>Acciones recomendadas</h4>
+  <ul>
+    {% for a in ai.get('acciones_recomendadas', []) %}
+    <li><strong>P{{ a.prioridad }}</strong> — {{ a.accion }} <span class="muted">({{ a.fundamento }})</span></li>
+    {% endfor %}
+  </ul>
+</div>

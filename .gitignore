@@ -1,0 +1,11 @@
+.env
+.env.*
+!.env.example
+secrets/
+__pycache__/
+*.pyc
+.venv/
+data/dev/
+data/pdn/tenants/
+**/google-drive*.json
+**/*service-account*.json

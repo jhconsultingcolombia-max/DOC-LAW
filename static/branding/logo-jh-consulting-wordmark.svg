@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 120" role="img" aria-label="JH Consulting">
+  <!-- Wordmark transparente: usar sobre fondos oscuros (#0f1419, topbar) -->
+  <text
+    x="120"
+    y="52"
+    text-anchor="middle"
+    font-family="Georgia, 'Times New Roman', Times, serif"
+    font-size="52"
+    font-weight="700"
+    fill="#FFFFFF"
+  >JH</text>
+  <rect x="72" y="62" width="96" height="2.5" rx="1.25" fill="#C9A227"/>
+  <text
+    x="120"
+    y="92"
+    text-anchor="middle"
+    font-family="'Segoe UI', system-ui, -apple-system, sans-serif"
+    font-size="14"
+    font-weight="600"
+    fill="#FFFFFF"
+    letter-spacing="6.5"
+  >CONSULTING</text>
+</svg>

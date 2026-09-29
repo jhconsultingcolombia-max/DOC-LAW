@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="JH Consulting">
+  <rect width="120" height="120" rx="16" fill="#0F1419"/>
+  <text
+    x="60"
+    y="58"
+    text-anchor="middle"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="46"
+    font-weight="700"
+    fill="#FFFFFF"
+  >JH</text>
+  <rect x="32" y="72" width="56" height="2.5" rx="1.25" fill="#C9A227"/>
+</svg>

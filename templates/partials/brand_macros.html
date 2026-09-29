@@ -1,0 +1,54 @@
+{% macro jh_mark(width=40, height=40, css_class='', base='') %}
+
+<img
+
+  class="jh-mark{% if css_class %} {{ css_class }}{% endif %}"
+
+  src="{{ base }}/static/branding/logo-jh-consulting-icon.svg"
+
+  width="{{ width }}"
+
+  height="{{ height }}"
+
+  alt=""
+
+  title="JH Consulting"
+
+/>
+
+{% endmacro %}
+
+
+
+{% macro jh_wordmark(css_class='', base='') %}
+
+<img
+
+  class="jh-wordmark{% if css_class %} {{ css_class }}{% endif %}"
+
+  src="{{ base }}/static/branding/logo-jh-consulting-wordmark.svg"
+
+  width="200"
+
+  height="100"
+
+  alt="JH Consulting"
+
+  title="JH Consulting"
+
+/>
+
+{% endmacro %}
+
+
+
+{% macro env_badge() %}{% endmacro %}
+
+{% macro doc_law_label() %}
+
+<span class="app-product-name">DOC_LAW</span>
+
+{{ env_badge() }}
+
+{% endmacro %}
+

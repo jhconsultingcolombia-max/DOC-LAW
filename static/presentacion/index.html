@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DOC_LAW — Presentación comercial</title>
+  <style>
+    :root {
+      --bg: #0a0e17;
+      --panel: #121826;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --accent: #2563eb;
+      --gold: #c9a227;
+      --navy: #000066;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+    }
+    .deck { max-width: 1100px; margin: 0 auto; padding: 48px 32px 120px; }
+    section.slide {
+      min-height: 72vh;
+      padding: 40px 0 56px;
+      border-bottom: 1px solid #1e293b;
+      page-break-after: always;
+    }
+    .eyebrow {
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+    h1 { font-size: 2.4rem; margin: 0 0 16px; letter-spacing: 0.04em; }
+    h2 { font-size: 1.65rem; margin: 0 0 12px; color: #fff; }
+    h3 { font-size: 1.1rem; margin: 24px 0 8px; color: #e2e8f0; }
+    p, li { color: var(--muted); font-size: 1.05rem; }
+    ul { padding-left: 1.2rem; }
+    li { margin-bottom: 8px; }
+    .lead { font-size: 1.2rem; color: #cbd5e1; max-width: 720px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: start; }
+    @media (max-width: 900px) { .grid-2 { grid-template-columns: 1fr; } }
+    .pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 28px; }
+    @media (max-width: 800px) { .pillars { grid-template-columns: 1fr; } }
+    .pillar {
+      background: var(--panel);
+      border: 1px solid #1e293b;
+      border-radius: 12px;
+      padding: 24px;
+    }
+    .pillar strong { display: block; font-size: 1.15rem; color: #fff; margin-bottom: 8px; }
+    .steps { counter-reset: step; list-style: none; padding: 0; margin: 20px 0; }
+    .steps li {
+      counter-increment: step;
+      padding: 12px 0 12px 48px;
+      position: relative;
+      border-left: 2px solid #1e293b;
+      margin-left: 12px;
+    }
+    .steps li::before {
+      content: counter(step);
+      position: absolute;
+      left: -14px;
+      top: 10px;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--navy);
+      border: 2px solid var(--accent);
+      color: #fff;
+      font-size: 0.8rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    figure { margin: 0; }
+    figure img {
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid #334155;
+      display: block;
+    }
+    figcaption { font-size: 0.85rem; color: var(--muted); margin-top: 8px; text-align: center; }
+    .highlight {
+      border-left: 4px solid var(--accent);
+      padding-left: 20px;
+      margin: 24px 0;
+    }
+    .brand-row { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; }
+    .doc-law { color: var(--accent); font-weight: 800; letter-spacing: 0.28em; }
+    .footer-note { font-size: 0.85rem; color: #64748b; margin-top: 48px; }
+    @media print {
+      html, body, .deck {
+        background: #0a0e17 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+      body { color: #f1f5f9 !important; }
+      .deck { max-width: none; padding: 0; margin: 0; }
+      section.slide {
+        min-height: 100vh;
+        box-sizing: border-box;
+        padding: 44px 52px;
+        background: #0a0e17 !important;
+        border-bottom: none;
+        page-break-after: always;
+        break-after: page;
+      }
+      p, li, figcaption { color: #94a3b8 !important; }
+      .lead { color: #cbd5e1 !important; }
+      h1, h2, h3, .pillar strong { color: #fff !important; }
+      .eyebrow { color: #c9a227 !important; }
+      .doc-law { color: #2563eb !important; }
+      .pillar {
+        background: #121826 !important;
+        border-color: #1e293b !important;
+      }
+      .highlight { border-left-color: #2563eb !important; }
+      .steps li::before {
+        background: #000066 !important;
+        border-color: #2563eb !important;
+        color: #fff !important;
+      }
+      figure img { max-height: 58vh; width: 100%; object-fit: contain; }
+      @page { size: A4 landscape; margin: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="deck">
+
+    <section class="slide">
+      <p class="eyebrow">JH CONSULTING</p>
+      <h1>Empresa de automatización<br />y procesos inteligentes</h1>
+      <p class="lead">
+        Diseñamos e implementamos soluciones digitales que ordenan la operación,
+        reducen trabajo manual y conectan datos, documentos e inteligencia artificial
+        en entornos exigentes: legal, corporativo y multi-cliente.
+      </p>
+      <div class="brand-row" style="margin-top: 40px;">
+        <span class="doc-law">DOC_LAW</span>
+        <span style="color: var(--muted);">Plataforma jurídica · Colombia</span>
+      </div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">Quiénes somos</p>
+      <h2>JH Consulting</h2>
+      <ul>
+        <li>Diagnóstico de procesos y diseño de flujos de trabajo medibles.</li>
+        <li>Desarrollo de aplicaciones a medida con aislamiento por cliente (multi-tenant).</li>
+        <li>Integración de IA generativa con reglas de negocio, trazabilidad y revisión humana.</li>
+        <li>Despliegue en nube (Azure) con enfoque en seguridad, continuidad y escalabilidad.</li>
+      </ul>
+      <p class="highlight">
+        No vendemos “un chatbot suelto”: entregamos <strong style="color:#fff">procesos completos</strong>
+        — desde la recepción del caso hasta el seguimiento procesal y la comunicación con respaldo documental.
+      </p>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">La plataforma</p>
+      <h2>¿Qué es DOC_LAW?</h2>
+      <p class="lead">
+        Sistema web de <strong style="color:#fff">intake y gestión de expedientes jurídicos</strong> para despachos en Colombia.
+        Centraliza cliente, hechos, partes, documentos, análisis preliminar, radicados judiciales y asistente legal contextual.
+      </p>
+      <ul>
+        <li>Asistente guiado en 6 pasos para crear casos con método, sin perder información.</li>
+        <li>Checklist por rama del derecho alineado al marco colombiano (SUIN-Juriscol).</li>
+        <li>Guardado automático de progreso — el abogado avanza sin miedo a perder el trabajo.</li>
+        <li>Panel de expedientes con acceso directo a edición, proceso, IA y exportación Word.</li>
+        <li>Cada despacho opera en su propio espacio aislado (tenant).</li>
+      </ul>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">Propuesta de valor</p>
+      <h2>Tres grandes beneficios</h2>
+      <div class="pillars">
+        <div class="pillar">
+          <strong>1. Expediente digital ordenado</strong>
+          Cliente, empresa, hechos, partes y documentos en una estructura única por caso.
+          Deja de dispersar correos, carpetas y versiones sueltas.
+        </div>
+        <div class="pillar">
+          <strong>2. Análisis con IA sobre el caso</strong>
+          Viabilidad preliminar, marco normativo por rama, borradores y pantalla dedicada
+          de análisis sobre los documentos cargados — siempre sujeto a revisión del abogado.
+        </div>
+        <div class="pillar">
+          <strong>3. Radicados en tiempo real</strong>
+          Sincronización con consulta CPNU: actuaciones, despacho, fechas y alertas
+          <em>sin abrir la página de la Rama Judicial</em> en cada revisión.
+        </div>
+      </div>
+      <div class="pillar" style="margin-top: 20px; border-color: #2563eb44;">
+        <strong>Plus: Chat legal especializado</strong>
+        Asistente entrenado para derecho colombiano que responde usando documentos del caso o del despacho;
+        si no hay soporte documental, orienta con norma vigente y pasos a seguir.
+      </div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">Cómo funciona</p>
+      <h2>Crear un nuevo caso — flujo en 6 pasos</h2>
+      <ol class="steps">
+        <li><strong style="color:#fff">Cliente y empresa</strong> — Identificación, título del caso y estructura de carpetas del tenant.</li>
+        <li><strong style="color:#fff">Rama del derecho</strong> — Selección del área (laboral, civil, familia, etc.) con checklist y plazos típicos.</li>
+        <li><strong style="color:#fff">Hechos y cronología</strong> — Relato, notas de entrevista y plazos urgentes o prescripción.</li>
+        <li><strong style="color:#fff">Partes del proceso</strong> — Demandantes, demandados, testigos; radicados actuales si ya existen.</li>
+        <li><strong style="color:#fff">Documentos</strong> — Carga de contratos, reglamentos, pruebas (PDF, Word).</li>
+        <li><strong style="color:#fff">Análisis y cierre</strong> — Confirmación profesional y creación del expediente.</li>
+      </ol>
+    </section>
+
+    <section class="slide">
+      <div class="grid-2">
+        <div>
+          <h2>Paso 2 — Rama del derecho</h2>
+          <p>El sistema propone documentos mínimos y plazos según el área seleccionada, con enlace a SUIN-Juriscol.</p>
+        </div>
+        <figure>
+          <img src="01-rama-derecho.png" alt="Selección de rama del derecho" />
+          <figcaption>Catálogo de ramas — Colombia</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="grid-2">
+        <div>
+          <h2>Checklist automático</h2>
+          <p>Al elegir una rama (ej. Derecho Civil), aparecen requisitos documentales y referencias normativas inmediatas.</p>
+        </div>
+        <figure>
+          <img src="02-rama-detalle.png" alt="Detalle rama civil" />
+        </figure>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="grid-2">
+        <div>
+          <h2>Paso 3 — Hechos</h2>
+          <p>Cronología clara para alimentar el análisis posterior y el informe preliminar.</p>
+        </div>
+        <figure><img src="03-hechos.png" alt="Hechos y cronología" /></figure>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="grid-2">
+        <div>
+          <h2>Paso 4 — Partes</h2>
+          <p>Registro estructurado de actores procesales y vínculo con juzgado cuando ya hay proceso.</p>
+        </div>
+        <figure><img src="04-partes.png" alt="Partes del proceso" /></figure>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="grid-2">
+        <div>
+          <h2>Paso 5 — Documentos</h2>
+          <p>Arrastre o selección de archivos; quedan asociados al expediente para IA y chat.</p>
+        </div>
+        <figure><img src="05-documentos.png" alt="Carga de documentos" /></figure>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="grid-2">
+        <div>
+          <h2>Paso 6 — Cierre</h2>
+          <p>Confirmación de revisión profesional antes de comunicar al cliente. Estado “borrador” hasta aprobación.</p>
+        </div>
+        <figure><img src="06-cierre.png" alt="Análisis preliminar y cierre" /></figure>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="grid-2">
+        <div>
+          <h2>Panel de expedientes</h2>
+          <p>Vista única de casos recientes: rama, estado, acciones rápidas (editar, proceso, <strong style="color:#fff">Análisis IA</strong>, Word).</p>
+          <p>Barra de alertas cuando hay <strong style="color:#fff">actuaciones judiciales sin leer</strong>.</p>
+        </div>
+        <figure><img src="07-dashboard.png" alt="Dashboard expedientes" /></figure>
+      </div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">Diferenciador clave</p>
+      <h2>Radicados CPNU en la plataforma</h2>
+      <div class="grid-2">
+        <div>
+          <ul>
+            <li>Agregar radicado de 23 dígitos y actualizar con un clic.</li>
+            <li>Línea de tiempo de actuaciones con fecha y descripción.</li>
+            <li>Marca “sin leer” para no perder memorials ni fijaciones de estado.</li>
+            <li>Despacho judicial y última sincronización visibles.</li>
+            <li>Enlace directo a consulta oficial cuando se requiera.</li>
+          </ul>
+          <p class="highlight">
+            El abogado deja de “entrar todos los días a la web de la Rama” para saber si hubo novedad:
+            la novedad llega al panel y al módulo del caso.
+          </p>
+        </div>
+        <figure><img src="08-radicados.png" alt="Radicados CPNU" /></figure>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="grid-2">
+        <div>
+          <h2>Chat legal especializado</h2>
+          <ul>
+            <li>Contexto por caso o general del despacho.</li>
+            <li>Respuestas apoyadas en documentos cargados (RAG).</li>
+            <li>Si falta soporte documental, cita derecho colombiano y recomienda actuación.</li>
+            <li>Ideal para preguntas puntuales: sanciones, plazos, procedimiento.</li>
+          </ul>
+        </div>
+        <figure><img src="09-chat.png" alt="Chat legal" /></figure>
+      </div>
+    </section>
+
+    <section class="slide">
+      <p class="eyebrow">Cierre</p>
+      <h2>Resumen para el despacho</h2>
+      <ul>
+        <li><strong style="color:#fff">Método:</strong> intake guiado que estandariza la recepción del caso.</li>
+        <li><strong style="color:#fff">Productividad:</strong> IA y Word sobre el mismo expediente.</li>
+        <li><strong style="color:#fff">Control procesal:</strong> radicados y actuaciones centralizados.</li>
+        <li><strong style="color:#fff">Confianza:</strong> multi-tenant, revisión humana obligatoria, trazabilidad.</li>
+      </ul>
+      <p class="lead" style="margin-top: 32px;">
+        <span class="doc-law">DOC_LAW</span> — by JH Consulting<br />
+        Automatización con criterio jurídico. Demo en vivo bajo solicitud.
+      </p>
+      <p class="footer-note">
+        Material comercial · Sin precios · Imágenes de producto real · Colombia
+      </p>
+    </section>
+
+  </div>
+</body>
+</html>

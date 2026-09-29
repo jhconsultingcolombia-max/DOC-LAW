@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="JH Consulting">
+  <!-- Icono cuadrado: favicon, avatar, barra compacta -->
+  <rect width="120" height="120" rx="18" fill="#2A3140"/>
+  <text
+    x="60"
+    y="54"
+    text-anchor="middle"
+    font-family="Georgia, 'Times New Roman', Times, serif"
+    font-size="44"
+    font-weight="700"
+    fill="#FFFFFF"
+  >JH</text>
+  <rect x="34" y="64" width="52" height="2.5" rx="1.25" fill="#C9A227"/>
+</svg>

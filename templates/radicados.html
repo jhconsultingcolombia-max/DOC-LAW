@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Radicados — DOC_LAW</title>
+  <link rel="stylesheet" href="{{ legal_base }}/static/legal.css" />
+</head>
+<body>
+  {% from "partials/brand_macros.html" import jh_mark, doc_law_label %}
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="topbar-brand-stack">
+        {{ doc_law_label() }}
+        <strong>Radicados — pendientes de lectura</strong>
+        <span class="muted">{{ despacho }} · {{ no_leidos }} sin leer</span>
+      </div>
+    </div>
+    {{ jh_mark(36, 36, base=legal_base) }}
+    <nav class="topbar-nav">
+      <a href="{{ legal_base }}/dashboard" class="btn btn-ghost">← Panel</a>
+    </nav>
+  </header>
+
+  <div id="radicados-bar" class="radicados-alerta" role="region" aria-label="Radicados judiciales">
+    <button
+      type="button"
+      id="btn-refresh-radicados-dashboard"
+      class="btn btn-ghost btn-icon radicados-refresh-btn"
+      title="Refrescar radicados"
+      aria-label="Refrescar radicados"
+    >
+      ↻
+    </button>
+    <span id="radicados-sync-msg" class="muted radicados-sync-msg"></span>
+  </div>
+
+  <main class="container">
+    {% if items %}
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Actuación</th>
+            <th>Radicado</th>
+            <th>Caso</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for it in items %}
+          <tr class="row-unread">
+            <td>{{ it.fecha or '—' }}</td>
+            <td>
+              <strong>{{ it.actuacion or '—' }}</strong>
+              {% if it.anotacion %}
+              <div class="muted small">{{ it.anotacion[:120] }}{% if it.anotacion|length > 120 %}…{% endif %}</div>
+              {% endif %}
+            </td>
+            <td><code>{{ it.numero }}</code></td>
+            <td>{{ it.titulo or it.case_id }}</td>
+            <td>
+              <a href="{{ legal_base }}/caso/{{ it.case_id }}/proceso?solo=noleidos#act-{{ it.actuacion_id }}" class="btn btn-primary btn-sm">Revisar</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <div class="empty-state">
+      <h3>Todo al día</h3>
+      <p>No hay actuaciones judiciales pendientes de lectura.</p>
+      <a href="{{ legal_base }}/dashboard" class="btn btn-secondary">Volver al panel</a>
+    </div>
+    {% endif %}
+  </main>
+  {% include "partials/legal_assets.html" %}
+  <script src="{{ legal_base }}/static/radicados.js"></script>
+</body>
+</html>

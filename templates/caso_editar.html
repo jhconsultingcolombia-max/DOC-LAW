@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Expediente {{ caso.case_id }} — DOC_LAW</title>
+  <link rel="stylesheet" href="{{ legal_base }}/static/legal.css" />
+</head>
+<body>
+  {% from "partials/brand_macros.html" import jh_mark, doc_law_label %}
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="topbar-brand-stack">
+        {{ doc_law_label() }}
+        <strong>Expediente {{ caso.case_id }}</strong>
+        <span class="muted">{{ caso.titulo or 'Sin título' }}</span>
+      </div>
+    </div>
+    {{ jh_mark(36, 36, base=legal_base) }}
+    <nav class="topbar-nav">
+      <a href="{{ legal_base }}/dashboard" class="btn btn-ghost">← Panel</a>
+      <a href="{{ legal_base }}/caso/{{ caso.case_id }}/informe.docx" class="btn btn-secondary">⬇ Descargar Word</a>
+    </nav>
+  </header>
+
+  <main class="container edit-layout">
+    <aside class="edit-sidebar">
+      <div class="info-box">
+        <strong>Informe Word</strong>
+        <p class="muted">Análisis completo del caso en documento descargable.</p>
+        {% if caso.informe_word %}
+        <a href="{{ legal_base }}/caso/{{ caso.case_id }}/informe.docx" class="btn btn-primary btn-block">Descargar .docx</a>
+        {% else %}
+        <p class="muted">Se generará al guardar cambios.</p>
+        {% endif %}
+      </div>
+      <div class="info-box">
+        <strong>Estado</strong>
+        <p><span class="badge">{{ caso.estado }}</span></p>
+        <p class="muted">Creado: {{ caso.creado[:10] if caso.creado else '—' }}</p>
+        {% if caso.actualizado %}
+        <p class="muted">Actualizado: {{ caso.actualizado[:10] }}</p>
+        {% endif %}
+      </div>
+      <div class="info-box">
+        <strong>Análisis con IA</strong>
+        <p class="muted">Suba marco de trabajo y ejecute análisis en pantalla dedicada.</p>
+        <a href="{{ legal_base }}/caso/{{ caso.case_id }}/analisis" class="btn btn-primary btn-block">Ir a Análisis IA →</a>
+      </div>
+    </aside>
+
+    <section class="wizard-panel">
+      <h2>Editar expediente</h2>
+      <p class="muted">Modifique los datos y guarde. El informe Word se regenera automáticamente.</p>
+
+      <form id="edit-form">
+        <div class="grid-2">
+          <label>Título *
+            <input id="titulo" type="text" value="{{ caso.titulo or '' }}" required />
+          </label>
+          <label>Estado
+            <select id="estado">
+              <option value="intake_inicial" {% if caso.estado == 'intake_inicial' %}selected{% endif %}>Intake inicial</option>
+              <option value="en_analisis" {% if caso.estado == 'en_analisis' %}selected{% endif %}>En análisis</option>
+              <option value="pendiente_aprobacion" {% if caso.estado == 'pendiente_aprobacion' %}selected{% endif %}>Pendiente aprobación</option>
+              <option value="aceptado" {% if caso.estado == 'aceptado' %}selected{% endif %}>Aceptado</option>
+              <option value="cerrado" {% if caso.estado == 'cerrado' %}selected{% endif %}>Cerrado</option>
+            </select>
+          </label>
+          <label>Cliente *
+            <input id="cliente_nombre" type="text" value="{{ caso.cliente_nombre or '' }}" required />
+          </label>
+          <label>ID cliente
+            <input id="client_id" type="text" value="{{ caso.client_id or '' }}" />
+          </label>
+          <label>Empresa
+            <input id="empresa_nombre" type="text" value="{{ caso.empresa_nombre or '' }}" />
+          </label>
+          <label>NIT empresa
+            <input id="empresa_id" type="text" value="{{ caso.empresa_id or '' }}" />
+          </label>
+        </div>
+
+        <label>Rama del derecho
+          <select id="rama_id">
+            <option value="">— Seleccionar —</option>
+            {% for r in ramas %}
+            <option value="{{ r.id }}" {% if caso.rama_id == r.id %}selected{% endif %}>{{ r.nombre }}</option>
+            {% endfor %}
+          </select>
+        </label>
+
+        <label>Hechos *
+          <textarea id="hechos" rows="8" required>{{ caso.hechos or '' }}</textarea>
+        </label>
+
+        <label>Notas de entrevista
+          <textarea id="entrevista" rows="4">{{ caso.entrevista or '' }}</textarea>
+        </label>
+
+        <label>Plazo urgente
+          <input id="plazo_urgente" type="text" value="{{ caso.plazo_urgente or '' }}" />
+        </label>
+
+        <label>Procesos radicados
+          <textarea id="procesos_radicados" rows="3">{{ caso.procesos_radicados or '' }}</textarea>
+        </label>
+
+        <div class="analysis-card draft" id="preview-box">
+          <h4>Borrador comunicación al cliente</h4>
+          <pre id="preview-comunicacion">{{ caso.borrador_comunicacion or '—' }}</pre>
+        </div>
+
+        <footer class="wizard-footer" style="border-top:none;padding-top:0;">
+          <button type="submit" class="btn btn-primary" id="btn-save">Guardar cambios</button>
+        </footer>
+      </form>
+      <div id="save-msg" class="alert hidden"></div>
+    </section>
+  </main>
+
+  <script>
+    window.CASE_ID = {{ caso.case_id | tojson }};
+    window.CASO_PARTES = {{ caso.partes | tojson }};
+  </script>
+  {% include "partials/legal_assets.html" %}
+  <script src="{{ legal_base }}/static/caso_editar.js"></script>
+</body>
+</html>

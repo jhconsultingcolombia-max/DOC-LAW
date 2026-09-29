@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+<head>
+
+  <meta charset="utf-8" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>{% if modo == 'editar' %}Editar caso{% else %}Nuevo caso{% endif %} — DOC_LAW</title>
+
+  <link rel="stylesheet" href="{{ legal_base }}/static/legal.css" />
+
+</head>
+
+<body>
+
+  {% from "partials/brand_macros.html" import jh_mark, doc_law_label %}
+  <header class="topbar">
+
+    <div class="topbar-left">
+
+      <div class="topbar-brand-stack">
+
+        {{ doc_law_label() }}
+
+        <strong>{{ despacho }}</strong>
+
+        <span class="muted">{% if modo == 'editar' %}Editar expediente {{ caso.case_id }}{% else %}Asistente de intake legal{% endif %}</span>
+
+      </div>
+
+    </div>
+
+    {{ jh_mark(36, 36, base=legal_base) }}
+
+    <nav class="topbar-nav">
+
+      <a href="{{ legal_base }}/dashboard" class="btn btn-ghost">← Panel</a>
+
+      {% if modo == 'editar' %}
+
+      <a href="{{ legal_base }}/caso/{{ caso.case_id }}/analisis" class="btn btn-primary">Análisis IA →</a>
+
+      <button type="button" class="btn btn-ghost btn-danger" id="btn-delete-case">Eliminar expediente</button>
+
+      {% endif %}
+
+    </nav>
+
+  </header>
+
+
+
+  <main class="container wizard-layout">
+
+    <aside class="wizard-steps" id="step-nav">
+
+      <button type="button" class="step active" data-step="0">1. Cliente y empresa</button>
+
+      <button type="button" class="step" data-step="1">2. Rama del derecho</button>
+
+      <button type="button" class="step" data-step="2">3. Hechos y cronología</button>
+
+      <button type="button" class="step" data-step="3">4. Partes del proceso</button>
+
+      <button type="button" class="step" data-step="4">5. Documentos</button>
+
+      <button type="button" class="step" data-step="5">6. {% if modo == 'editar' %}Guardar{% else %}Análisis y cierre{% endif %}</button>
+
+    </aside>
+
+
+
+    <section class="wizard-panel">
+
+      <div class="wizard-page active" data-page="0">
+
+        <h2>Cliente y empresa</h2>
+
+        <p class="muted">{% if modo == 'editar' %}Modifique los datos del expediente.{% else %}Se creará carpeta aislada en el contenedor del tenant si no existe.{% endif %}</p>
+
+        <div class="grid-2">
+
+          <label>Nombre del cliente *
+
+            <input id="cliente_nombre" type="text" placeholder="Juan Pérez" required />
+
+          </label>
+
+          <label>ID / documento cliente
+
+            <input id="client_id" type="text" placeholder="CC 123456789" />
+
+          </label>
+
+          <label>Empresa vinculada (opcional)
+
+            <input id="empresa_nombre" type="text" placeholder="Empresa ABC S.A.S." />
+
+          </label>
+
+          <label>NIT empresa
+
+            <input id="empresa_id" type="text" placeholder="900123456-1" />
+
+          </label>
+
+        </div>
+
+        <label>Título del caso *
+
+          <input id="titulo" type="text" placeholder="Despido injustificado — operario planta" required />
+
+        </label>
+
+      </div>
+
+
+
+      <div class="wizard-page" data-page="1">
+
+        <h2>Rama del derecho (Colombia)</h2>
+
+        <p class="muted">Seleccione el área para checklist documental y marco normativo.</p>
+
+        <div class="rama-grid" id="rama-grid"></div>
+
+        <div id="rama-detail" class="info-box hidden"></div>
+
+      </div>
+
+
+
+      <div class="wizard-page" data-page="2">
+
+        <h2>Hechos y cronología</h2>
+
+        <label>Relato de hechos *
+
+          <textarea id="hechos" rows="8" placeholder="Describa los hechos en orden cronológico..."></textarea>
+
+        </label>
+
+        <label>Preguntas de profundización (notas de entrevista)
+
+          <textarea id="entrevista" rows="4" placeholder="¿Hubo conciliación previa? ¿Hay testigos presenciales?"></textarea>
+
+        </label>
+
+        <label>Plazo urgente / prescripción reportada
+
+          <input id="plazo_urgente" type="text" placeholder="Ej: posible prescripción en 6 meses" />
+
+        </label>
+
+      </div>
+
+
+
+      <div class="wizard-page" data-page="3">
+
+        <h2>Partes del proceso</h2>
+
+        <div class="partes-toolbar">
+
+          <select id="parte_tipo">
+
+            <option value="demandante">Demandante</option>
+
+            <option value="demandado">Demandado</option>
+
+            <option value="empleado">Empleado</option>
+
+            <option value="testigo">Testigo</option>
+
+            <option value="tercero">Tercero</option>
+
+          </select>
+
+          <input id="parte_nombre" type="text" placeholder="Nombre completo" />
+
+          <input id="parte_id" type="text" placeholder="Documento / NIT" />
+
+          <button type="button" class="btn btn-secondary" id="btn-add-parte">Agregar</button>
+
+        </div>
+
+        <ul id="partes-list" class="partes-list"></ul>
+
+        <label>Procesos radicados actuales (radicado / juzgado)
+
+          <textarea id="procesos_radicados" rows="3" placeholder="23-001-40-03-2024-00001-00 — Juzgado 40 Laboral"></textarea>
+
+        </label>
+
+      </div>
+
+
+
+      <div class="wizard-page" data-page="4">
+
+        <h2>Documentos</h2>
+
+        <p class="muted">Marco de trabajo, reglamento, contratos. Para análisis IA use también la pantalla Análisis.</p>
+
+        <div class="upload-zone" id="upload-zone">
+
+          <input type="file" id="file-input" multiple accept=".pdf,.docx,.doc,.txt" hidden />
+
+          <p>Arrastre archivos o <button type="button" class="link-btn" id="pick-files">seleccione</button></p>
+
+        </div>
+
+        <ul id="uploaded-list" class="uploaded-list"></ul>
+
+      </div>
+
+
+
+      <div class="wizard-page" data-page="5">
+
+        {% if modo == 'editar' %}
+
+        <h2>Guardar cambios</h2>
+
+        <p class="muted">Actualiza el expediente. El análisis con IA se ejecuta en la pantalla «Análisis IA».</p>
+
+        <div id="analysis-result" class="analysis-result hidden"></div>
+
+        {% else %}
+
+        <h2>Análisis preliminar</h2>
+
+        <p class="muted">Viabilidad y borrador — sujeto a aprobación del abogado.</p>
+
+        <div id="analysis-result" class="analysis-result hidden"></div>
+
+        <label class="checkbox-row">
+
+          <input type="checkbox" id="aprobacion_abogado" />
+
+          Confirmo revisión y aprobación profesional antes de enviar al cliente
+
+        </label>
+
+        {% endif %}
+
+      </div>
+
+
+
+      <footer class="wizard-footer">
+        <span id="save-status" class="save-status muted"></span>
+        <button type="button" class="btn btn-secondary" id="btn-save">Guardar progreso</button>
+        <button type="button" class="btn btn-ghost" id="btn-prev" disabled>Anterior</button>
+        <button type="button" class="btn btn-primary" id="btn-next">Siguiente</button>
+        <button type="button" class="btn btn-primary hidden" id="btn-submit">
+          {% if modo == 'editar' %}Guardar expediente{% else %}Crear expediente{% endif %}
+        </button>
+      </footer>
+
+    </section>
+
+  </main>
+
+
+
+  <script>
+
+    window.RAMAS = {{ ramas | tojson }};
+
+    window.MODO = {{ modo | tojson }};
+
+    window.CASE_EDIT = {% if caso %}{{ caso | tojson }}{% else %}null{% endif %};
+
+  </script>
+
+  {% include "partials/legal_assets.html" %}
+  <script src="{{ legal_base }}/static/legal.js"></script>
+
+</body>
+
+</html>
+
+

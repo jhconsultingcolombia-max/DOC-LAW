@@ -1,0 +1,4 @@
+usuario,clave,tenant_id,nombre_despacho,max_casos,admin
+David,12345,david,Despacho David — JH consulting,,1
+Felipe,98765,felipe,Despacho Felipe — JH consulting,,0
+Fredy,12345,fredy,Despacho Fredy — JH consulting,,0

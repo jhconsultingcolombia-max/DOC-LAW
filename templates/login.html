@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+<head>
+
+  <meta charset="utf-8" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>DOC_LAW — Acceso</title>
+
+  <link rel="stylesheet" href="{{ legal_base }}/static/legal.css" />
+
+</head>
+
+<body class="auth-body">
+
+  {% from "partials/brand_macros.html" import jh_wordmark, env_badge %}
+
+  {{ jh_wordmark('auth-jh-corner', legal_base) }}
+
+  <div class="auth-card">
+
+    <div class="login-app-brand">
+
+      <h1 class="app-product-name">DOC_LAW</h1>
+      {{ env_badge() }}
+
+      <p>Recepción inteligente de casos · Colombia</p>
+
+    </div>
+
+    {% if error %}
+
+    <div class="alert alert-error">{{ error }}</div>
+
+    {% endif %}
+
+    <form method="post" class="form-stack">
+
+      <label>
+
+        Usuario
+
+        <input type="text" name="usuario" placeholder="Usuario" required autocomplete="username" />
+
+      </label>
+
+      <label>
+
+        Contraseña
+
+        <input type="password" name="clave" placeholder="•••••" required autocomplete="current-password" />
+
+      </label>
+
+      <button type="submit" class="btn btn-primary btn-block">Ingresar al despacho</button>
+
+    </form>
+
+  </div>
+
+  <script>
+
+    try { sessionStorage.removeItem("legal_radicados_sync_done"); } catch (e) {}
+
+  </script>
+
+</body>
+
+</html>
+
+

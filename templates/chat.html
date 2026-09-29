@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chat legal — DOC_LAW</title>
+  <link rel="stylesheet" href="{{ legal_base }}/static/legal.css" />
+</head>
+<body>
+  {% from "partials/brand_macros.html" import jh_mark, doc_law_label %}
+  <header class="topbar topbar-brand">
+    <div class="topbar-left">
+      <div class="topbar-brand-stack">
+        {{ doc_law_label() }}
+        <strong>Chat legal Colombia</strong>
+        <span class="muted" id="chat-subtitle">{{ subtitle }}</span>
+      </div>
+    </div>
+    {{ jh_mark(36, 36, base=legal_base) }}
+    <nav class="topbar-nav">
+      {% if case_id %}
+      <a href="{{ legal_base }}/caso/{{ case_id }}/analisis" class="btn btn-ghost">Análisis IA</a>
+      <a href="{{ legal_base }}/caso/{{ case_id }}" class="btn btn-ghost">Editar caso</a>
+      {% endif %}
+      <a href="{{ legal_base }}/dashboard" class="btn btn-ghost">Panel</a>
+    </nav>
+  </header>
+
+  <main class="container chat-layout">
+    <aside class="chat-sidebar">
+      <div class="info-box">
+        <strong>Alcance</strong>
+        <p class="muted">Responde con documentos de la empresa/caso. Si no hay soporte documental, cita derecho colombiano vigente y cómo actuar.</p>
+      </div>
+      <div class="info-box">
+        <strong>Contexto</strong>
+        <label>Caso vinculado
+          <select id="chat-case-select">
+            <option value="__ley__" {% if law_only %}selected{% endif %}>— Sin contexto (solo ley) —</option>
+            <option value="" {% if not case_id and not law_only %}selected{% endif %}>— General (todos los docs del tenant) —</option>
+            {% for c in cases %}
+            <option value="{{ c.case_id }}" {% if c.case_id == case_id %}selected{% endif %}>
+              {{ c.case_id }} — {{ c.titulo or 'Sin título' }}
+            </option>
+            {% endfor %}
+          </select>
+        </label>
+      </div>
+      {% if show_chat_no_docs and not law_only %}
+      <div class="info-box">
+        <label class="checkbox-row">
+          <input type="checkbox" id="chat-no-documents" />
+          Sin documentos en contexto (solo norma + caso)
+        </label>
+        <p class="muted" style="margin:8px 0 0;font-size:0.85rem;">
+          Útil en local para probar respuestas rápidas sin leer PDF/Word del tenant.
+        </p>
+      </div>
+      {% endif %}
+      <div class="info-box">
+        <strong>Documentos en contexto</strong>
+        <ul id="chat-docs-list" class="uploaded-list muted">
+          <li>Cargando…</li>
+        </ul>
+      </div>
+      <button type="button" class="btn btn-secondary btn-block" id="btn-clear-chat">Limpiar conversación</button>
+    </aside>
+
+    <section class="chat-panel">
+      <div id="chat-messages" class="chat-messages"></div>
+      <form id="chat-form" class="chat-input-row">
+        <textarea id="chat-input" rows="3" placeholder="Ej: ¿Qué sanción aplica por llegar tarde bajo el reglamento y la ley?"></textarea>
+        <button type="submit" class="btn btn-primary" id="btn-send-chat">Enviar</button>
+      </form>
+    </section>
+  </main>
+
+  <script>
+    window.CHAT_CASE_ID = {{ case_id | tojson if case_id else 'null' }};
+    window.CHAT_LAW_ONLY = {{ law_only | tojson }};
+    window.CHAT_HISTORY = {{ history | tojson }};
+  </script>
+  {% include "partials/legal_assets.html" %}
+  <script src="{{ legal_base }}/static/legal_chat.js"></script>
+</body>
+</html>

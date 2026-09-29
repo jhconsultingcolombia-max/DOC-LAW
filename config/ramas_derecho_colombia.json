@@ -1,0 +1,72 @@
+[
+  {
+    "id": "laboral",
+    "nombre": "Derecho Laboral",
+    "documentos_minimos": ["Contrato de trabajo", "Despidos/comunicaciones", "Colillas de pago", "Certificados EPS/ARL"],
+    "plazos_tipicos": ["Prescripción 3 años (acciones salariales)", "Término conciliación prejudicial"],
+    "fuentes": ["CST", "Ley 50/1990", "Ley 1610/2013"]
+  },
+  {
+    "id": "familiar",
+    "nombre": "Derecho de Familia",
+    "documentos_minimos": ["Registro civil", "Pruebas económicas", "Denuncias o conciliaciones previas"],
+    "plazos_tipicos": ["Procesos de alimentos", "Custodia y régimen de visitas"],
+    "fuentes": ["Código de la Infancia", "Ley 1098/2006", "Ley 2126/2021"]
+  },
+  {
+    "id": "civil",
+    "nombre": "Derecho Civil",
+    "documentos_minimos": ["Contratos", "Comprobantes de pago", "Comunicaciones entre partes"],
+    "plazos_tipicos": ["Prescripción según tipo de obligación (art. 2536 CCo)"],
+    "fuentes": ["Código Civil", "Código General del Proceso"]
+  },
+  {
+    "id": "comercial",
+    "nombre": "Derecho Comercial",
+    "documentos_minimos": ["Contratos mercantiles", "Facturas", "Estados financieros"],
+    "plazos_tipicos": ["Títulos valores", "Procesos ejecutivos"],
+    "fuentes": ["Código de Comercio", "Estatuto de Sociedades"]
+  },
+  {
+    "id": "administrativo",
+    "nombre": "Derecho Administrativo",
+    "documentos_minimos": ["Actos administrativos", "PQRSD", "Notificaciones"],
+    "plazos_tipicos": ["Medio de control según acto", "Caducidad de nulidad y restablecimiento"],
+    "fuentes": ["CPACA", "Ley 1437/2011"]
+  },
+  {
+    "id": "penal",
+    "nombre": "Derecho Penal",
+    "documentos_minimos": ["Denuncia", "Informes de policía/fiscalía", "Pruebas documentales"],
+    "plazos_tipicos": ["Etapa de indagación/investigación", "Audiencias"],
+    "fuentes": ["Código Penal", "Código de Procedimiento Penal", "Constitución art. 29"]
+  },
+  {
+    "id": "constitucional",
+    "nombre": "Derecho Constitucional",
+    "documentos_minimos": ["Acto demandado", "Prueba de vulneración de derechos"],
+    "plazos_tipicos": ["Tutela (inmediato)", "Acciones de grupo"],
+    "fuentes": ["Constitución Política 1991", "Decreto 2591/1991"]
+  },
+  {
+    "id": "tributario",
+    "nombre": "Derecho Tributario",
+    "documentos_minimos": ["Liquidaciones", "Requerimientos DIAN", "Declaraciones"],
+    "plazos_tipicos": ["Recursos ante DIAN", "Procesos contencioso-administrativos"],
+    "fuentes": ["Estatuto Tributario", "CPACA"]
+  },
+  {
+    "id": "inmobiliario",
+    "nombre": "Derecho Inmobiliario",
+    "documentos_minimos": ["Escrituras", "Certificados de libertad y tradición", "Contratos de arrendamiento"],
+    "plazos_tipicos": ["Restitución de inmueble", "Procesos de pertenencia"],
+    "fuentes": ["Código Civil (bienes)", "Ley 820/2003 (arrendamiento)"]
+  },
+  {
+    "id": "disciplinario",
+    "nombre": "Derecho Disciplinario",
+    "documentos_minimos": ["Pliego de cargos", "Descargos", "Pruebas del proceso"],
+    "plazos_tipicos": ["Etapa instructora", "Fallo de primera/segunda instancia"],
+    "fuentes": ["Ley 734/2002", "Ley 1952/2019 (CPACA funcional)"]
+  }
+]
