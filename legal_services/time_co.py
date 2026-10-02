@@ -1,10 +1,9 @@
-"""Fechas/horas en zona Colombia (America/Bogota)."""
+"""Fechas/horas en zona Colombia (UTC−5)."""
 from __future__ import annotations
 
-from datetime import datetime, timezone
-from zoneinfo import ZoneInfo
+from datetime import datetime, timedelta, timezone
 
-CO_TZ = ZoneInfo("America/Bogota")
+CO_OFFSET = timedelta(hours=-5)
 
 
 def parse_iso(iso: str) -> datetime | None:
@@ -30,13 +29,17 @@ def format_iso_colombia(iso: str | None, *, with_seconds: bool = False) -> str:
     dt = parse_iso(iso)
     if not dt:
         return "—"
+    utc = dt.astimezone(timezone.utc).replace(tzinfo=None)
+    co = utc + CO_OFFSET
     fmt = "%d/%m/%Y %H:%M:%S" if with_seconds else "%d/%m/%Y %H:%M"
-    return dt.astimezone(CO_TZ).strftime(fmt)
+    return co.strftime(fmt)
 
 
 def now_colombia_str(*, with_seconds: bool = False) -> str:
+    utc = datetime.now(timezone.utc).replace(tzinfo=None)
+    co = utc + CO_OFFSET
     fmt = "%d/%m/%Y %H:%M:%S" if with_seconds else "%d/%m/%Y %H:%M"
-    return datetime.now(CO_TZ).strftime(fmt)
+    return co.strftime(fmt)
 
 
 def enrich_notificacion_display(record: dict) -> dict:

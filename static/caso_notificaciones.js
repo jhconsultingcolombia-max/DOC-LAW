@@ -137,21 +137,14 @@
       .replace(/>/g, "&gt;");
   }
 
+  /** UTC almacenado en JSON → restar 5 h (hora Colombia). */
   function fmtFecha(iso) {
     if (!iso) return "—";
     const d = new Date(iso);
     if (Number.isNaN(d.getTime())) return "—";
-    const f = new Intl.DateTimeFormat("es-CO", {
-      timeZone: "America/Bogota",
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-      hourCycle: "h23",
-    });
-    const parts = Object.fromEntries(f.formatToParts(d).map((p) => [p.type, p.value]));
-    return `${parts.day}/${parts.month}/${parts.year} ${parts.hour}:${parts.minute}`;
+    const co = new Date(d.getTime() - 5 * 60 * 60 * 1000);
+    const pad = (n) => String(n).padStart(2, "0");
+    return `${pad(co.getUTCDate())}/${pad(co.getUTCMonth() + 1)}/${co.getUTCFullYear()} ${pad(co.getUTCHours())}:${pad(co.getUTCMinutes())}`;
   }
 
   function horaEnviado(n) {
