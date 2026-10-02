@@ -1,9 +1,9 @@
-"""Gemini en Vertex AI (Cloud Run usa credenciales del servicio automáticamente)."""
+"""Gemini en Vertex AI (Cloud Run: credenciales del servicio)."""
 from __future__ import annotations
 
 import os
 
-_client = None
+_inited = False
 
 
 def is_configured() -> bool:
@@ -11,9 +11,7 @@ def is_configured() -> bool:
 
 
 def _project() -> str:
-    return (
-        (os.environ.get("GCP_PROJECT") or os.environ.get("GOOGLE_CLOUD_PROJECT") or "").strip()
-    )
+    return (os.environ.get("GCP_PROJECT") or os.environ.get("GOOGLE_CLOUD_PROJECT") or "").strip()
 
 
 def _location() -> str:
@@ -24,13 +22,14 @@ def model_id() -> str:
     return (os.environ.get("VERTEX_MODEL") or "gemini-2.5-flash").strip()
 
 
-def _get_client():
-    global _client
-    if _client is None:
-        from google import genai
+def _ensure_init() -> None:
+    global _inited
+    if _inited:
+        return
+    import vertexai
 
-        _client = genai.Client(vertexai=True, project=_project(), location=_location())
-    return _client
+    vertexai.init(project=_project(), location=_location())
+    _inited = True
 
 
 def _track_usage(tenant_id: str | None, response) -> None:
@@ -51,17 +50,13 @@ def chat_completion(
 ) -> str:
     if not is_configured():
         raise RuntimeError("Vertex no configurado (GCP_PROJECT).")
-    from google.genai import types
+    from vertexai.generative_models import GenerationConfig, GenerativeModel
 
-    client = _get_client()
-    response = client.models.generate_content(
-        model=model_id(),
-        contents=user_content,
-        config=types.GenerateContentConfig(
-            system_instruction=system_prompt,
-            max_output_tokens=max_tokens,
-            temperature=0.2,
-        ),
+    _ensure_init()
+    model = GenerativeModel(model_id(), system_instruction=[system_prompt])
+    response = model.generate_content(
+        user_content,
+        generation_config=GenerationConfig(max_output_tokens=max_tokens, temperature=0.2),
     )
     _track_usage(tenant_id, response)
     return (response.text or "").strip()
@@ -72,10 +67,13 @@ def chat_completion_messages(
 ) -> str:
     if not is_configured():
         raise RuntimeError("Vertex no configurado (GCP_PROJECT).")
-    from google.genai import types
+    from vertexai.generative_models import Content, GenerationConfig, GenerativeModel, Part
 
+    _ensure_init()
     system_parts: list[str] = []
-    contents: list[types.Content] = []
+    history: list[Content] = []
+    last_user = ""
+
     for msg in messages:
         role = (msg.get("role") or "user").lower()
         text = (msg.get("content") or "").strip()
@@ -84,28 +82,24 @@ def chat_completion_messages(
         if role == "system":
             system_parts.append(text)
             continue
-        vertex_role = "model" if role in ("assistant", "model") else "user"
-        contents.append(types.Content(role=vertex_role, parts=[types.Part.from_text(text)]))
+        if role == "user":
+            last_user = text
+            history.append(Content(role="user", parts=[Part.from_text(text)]))
+        else:
+            history.append(Content(role="model", parts=[Part.from_text(text)]))
 
-    if not contents:
-        raise ValueError("Sin mensajes para el modelo.")
+    if not last_user:
+        raise ValueError("Sin mensaje de usuario.")
 
-    client = _get_client()
-    config = types.GenerateContentConfig(
-        max_output_tokens=max_tokens,
-        temperature=0.25,
+    prior = history[:-1] if len(history) > 1 else []
+    model = GenerativeModel(
+        model_id(),
+        system_instruction=["\n\n".join(system_parts)] if system_parts else None,
     )
-    if system_parts:
-        config = types.GenerateContentConfig(
-            system_instruction="\n\n".join(system_parts),
-            max_output_tokens=max_tokens,
-            temperature=0.25,
-        )
-
-    response = client.models.generate_content(
-        model=model_id(),
-        contents=contents,
-        config=config,
+    chat = model.start_chat(history=prior)
+    response = chat.send_message(
+        last_user,
+        generation_config=GenerationConfig(max_output_tokens=max_tokens, temperature=0.25),
     )
     _track_usage(tenant_id, response)
     return (response.text or "").strip()
