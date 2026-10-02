@@ -48,7 +48,7 @@ gcloud storage buckets add-iam-policy-binding "gs://${BUCKET}" \
   --member="serviceAccount:${RUN_SA}" \
   --role="roles/storage.objectAdmin" --quiet
 
-ENV_VARS="LEGAL_DATA_ROOT=/mnt/legal-data,LEGAL_PUBLIC_BASE_URL=${URL},LLM_PROVIDER=vertex,GCP_PROJECT=${PROJECT},GCP_REGION=${REGION},VERTEX_MODEL=gemini-2.5-flash,MAIL_DRY_RUN=0,SMTP_HOST=smtp.gmail.com,SMTP_PORT=587,SMTP_USE_TLS=1,MAIL_FROM=jhconsultingcolombia@gmail.com,SMTP_USER=jhconsultingcolombia@gmail.com"
+ENV_VARS="LEGAL_DATA_ROOT=/mnt/legal-data,LEGAL_PUBLIC_BASE_URL=${URL},LLM_PROVIDER=vertex,GCP_PROJECT=${PROJECT},GCP_REGION=${REGION},VERTEX_MODEL=gemini-2.5-flash,MAIL_DRY_RUN=0,SMTP_HOST=smtp.gmail.com,SMTP_PORT=587,SMTP_USE_TLS=1,MAIL_FROM=jhconsultingcolombia@gmail.com,MAIL_FROM_NAME=JH Consulting — DOC_LAW,SMTP_USER=jhconsultingcolombia@gmail.com"
 
 gcloud run services update "$SERVICE" --region "$REGION" \
   --update-env-vars "$ENV_VARS" \

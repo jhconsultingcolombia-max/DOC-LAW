@@ -6,6 +6,7 @@ from email import encoders
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from email.utils import formataddr
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -27,7 +28,14 @@ def _smtp_credentials() -> tuple[str, str, str, int, str, str]:
     user = (os.environ.get("SMTP_USER") or "").strip()
     password = (os.environ.get("SMTP_PASSWORD") or "").strip().strip('"').replace(" ", "")
     use_ssl = (os.environ.get("SMTP_USE_SSL") or "").strip().lower() in ("1", "true", "yes")
-    return host, port, user, password, use_ssl, (os.environ.get("MAIL_FROM") or user or "").strip()
+    from_addr = (os.environ.get("MAIL_FROM") or user or "").strip()
+    return host, port, user, password, use_ssl, from_addr
+
+
+def _mail_from_header(from_addr: str) -> str:
+    reload_mail_env()
+    name = (os.environ.get("MAIL_FROM_NAME") or "JH Consulting — DOC_LAW").strip()
+    return formataddr((name, from_addr)) if from_addr else name
 
 
 def verify_smtp_connection() -> tuple[bool, str]:
@@ -138,8 +146,10 @@ def send_html_email(
             msg.attach(MIMEText(text_body, "plain", "utf-8"))
         msg.attach(MIMEText(html_body, "html", "utf-8"))
     msg["Subject"] = subject
-    msg["From"] = from_addr
+    msg["From"] = _mail_from_header(from_addr)
     msg["To"] = to_addr
+    msg["Reply-To"] = from_addr
+    msg["Auto-Submitted"] = "auto-generated"
 
     try:
         if use_ssl:
