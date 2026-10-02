@@ -139,7 +139,19 @@
 
   function fmtFecha(iso) {
     if (!iso) return "—";
-    return iso.replace("T", " ").slice(0, 16);
+    const d = new Date(iso);
+    if (Number.isNaN(d.getTime())) return "—";
+    const f = new Intl.DateTimeFormat("es-CO", {
+      timeZone: "America/Bogota",
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      hourCycle: "h23",
+    });
+    const parts = Object.fromEntries(f.formatToParts(d).map((p) => [p.type, p.value]));
+    return `${parts.day}/${parts.month}/${parts.year} ${parts.hour}:${parts.minute}`;
   }
 
   function envioCell(n) {

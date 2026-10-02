@@ -1,12 +1,13 @@
 """Constancia descargable de notificación (formato citación, contenido del mensaje enviado)."""
 from __future__ import annotations
 
-from datetime import datetime
 from pathlib import Path
 
 from docx import Document
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.shared import Pt, RGBColor
+
+from legal_services.time_co import format_iso_colombia, now_colombia_str
 
 _CENTER_HEADERS = (
     "república de colombia",
@@ -14,12 +15,6 @@ _CENTER_HEADERS = (
     "consejo superior",
     "notificación personal",
 )
-
-
-def _fmt_iso(iso: str | None) -> str:
-    if not iso:
-        return "—"
-    return iso.replace("T", " ")[:16]
 
 
 def _add_center_line(doc: Document, text: str, *, bold: bool = False, size: int = 11) -> None:
@@ -48,8 +43,8 @@ def generate_constancia_docx(record: dict, dest: Path) -> Path:
     doc.add_paragraph()
     meta = [
         ("Destinatario (Para)", record.get("para") or "—"),
-        ("Enviado", _fmt_iso(record.get("enviado_en") or record.get("creado"))),
-        ("Apertura registrada", _fmt_iso(record.get("abierto_en"))),
+        ("Enviado", format_iso_colombia(record.get("enviado_en") or record.get("creado"))),
+        ("Apertura registrada", format_iso_colombia(record.get("abierto_en"))),
         ("Estado envío", record.get("estado") or "—"),
     ]
     for label, value in meta:
@@ -88,9 +83,7 @@ def generate_constancia_docx(record: dict, dest: Path) -> Path:
 
     foot = doc.add_paragraph()
     foot.alignment = WD_ALIGN_PARAGRAPH.RIGHT
-    foot.add_run(
-        f"Generado {datetime.now().strftime('%d/%m/%Y %H:%M')}"
-    ).font.size = Pt(9)
+    foot.add_run(f"Generado {now_colombia_str()} (hora Colombia)").font.size = Pt(9)
 
     doc.save(dest)
     return dest
