@@ -53,7 +53,7 @@ ENV_VARS="LEGAL_DATA_ROOT=/mnt/legal-data,LEGAL_PUBLIC_BASE_URL=${URL},LLM_PROVI
 gcloud run services update "$SERVICE" --region "$REGION" \
   --update-env-vars "$ENV_VARS" \
   --add-volume=name=legal-data,type=cloud-storage,bucket="${BUCKET}" \
-  --add-volume-mount=volume-name=legal-data,mount-path=/mnt/legal-data \
+  --add-volume-mount=volume=legal-data,mount-path=/mnt/legal-data \
   --quiet
 
 echo ""
