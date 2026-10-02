@@ -1,4 +1,4 @@
-FROM python:3.12-slim
+FROM python:3.11-slim-bookworm
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
@@ -9,16 +9,9 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 
 WORKDIR /app
 
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends gcc \
-    && rm -rf /var/lib/apt/lists/*
-
-COPY requirements.txt requirements-vertex.txt ./
-RUN pip install --upgrade pip setuptools wheel \
+COPY requirements.txt .
+RUN pip install --upgrade pip \
     && pip install --no-cache-dir -r requirements.txt
-
-# Vertex (Gemini): capa aparte; si falla, la app igual arranca con Azure OpenAI.
-RUN pip install --no-cache-dir -r requirements-vertex.txt || true
 
 COPY . .
 
