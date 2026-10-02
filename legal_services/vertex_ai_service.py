@@ -26,7 +26,12 @@ def _ensure_init() -> None:
     global _inited
     if _inited:
         return
-    import vertexai
+    try:
+        import vertexai
+    except ImportError as exc:
+        raise RuntimeError(
+            "Vertex no instalado en la imagen. Redeploy o pip install google-cloud-aiplatform."
+        ) from exc
 
     vertexai.init(project=_project(), location=_location())
     _inited = True

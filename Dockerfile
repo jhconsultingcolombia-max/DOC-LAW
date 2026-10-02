@@ -2,6 +2,7 @@ FROM python:3.12-slim
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
+    PIP_DEFAULT_TIMEOUT=300 \
     PORT=8080 \
     LEGAL_ENV=pdn \
     LEGAL_URL_PREFIX=
@@ -12,15 +13,14 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends gcc \
     && rm -rf /var/lib/apt/lists/*
 
-COPY requirements.txt .
-RUN pip install --upgrade pip \
+COPY requirements.txt requirements-vertex.txt ./
+RUN pip install --upgrade pip setuptools wheel \
     && pip install --no-cache-dir -r requirements.txt
 
-COPY app.py .
-COPY legal_services ./legal_services
-COPY templates ./templates
-COPY static ./static
-COPY data/pdn ./data/pdn
+# Vertex (Gemini): capa aparte; si falla, la app igual arranca con Azure OpenAI.
+RUN pip install --no-cache-dir -r requirements-vertex.txt || true
+
+COPY . .
 
 EXPOSE 8080
 
