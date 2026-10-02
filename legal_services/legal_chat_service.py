@@ -165,7 +165,7 @@ def run_legal_chat(
     if not is_configured():
         return {
             "ok": False,
-            "error": "IA no configurada. Agregue AZURE_OPENAI_API_KEY en el archivo .env",
+            "error": "IA no configurada. Cloud Run: LLM_PROVIDER=vertex + GCP_PROJECT.",
         }
 
     message = (message or "").strip()

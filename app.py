@@ -422,7 +422,7 @@ def api_analizar_ia(case_id: str):
     if not is_configured():
         return jsonify({
             "ok": False,
-            "error": "IA no configurada. Agregue AZURE_OPENAI_API_KEY en el archivo .env",
+            "error": "IA no configurada. Vertex: LLM_PROVIDER=vertex y GCP_PROJECT en el servicio.",
         }), 503
     try:
         caso = analyze_case_with_ai(session["tenant_id"], case_id)
@@ -515,7 +515,7 @@ def api_chat():
     if not is_configured():
         return jsonify({
             "ok": False,
-            "error": "IA no configurada. Agregue AZURE_OPENAI_API_KEY en el archivo .env",
+            "error": "IA no configurada. Vertex: LLM_PROVIDER=vertex y GCP_PROJECT en el servicio.",
         }), 503
     payload = request.get_json(force=True)
     law_only = bool(payload.get("law_only"))
@@ -753,7 +753,17 @@ def api_admin_users_update(usuario: str):
 
 @app.route("/api/health")
 def health():
-    return jsonify({"service": "jh-consulting-doc-law", "status": "ok"})
+    from legal_services.openai_service import active_model_label, is_configured, llm_provider
+
+    return jsonify(
+        {
+            "service": "jh-consulting-doc-law",
+            "status": "ok",
+            "llm_provider": llm_provider(),
+            "llm_configured": is_configured(),
+            "llm_model": active_model_label() if is_configured() else None,
+        }
+    )
 
 
 if __name__ == "__main__":

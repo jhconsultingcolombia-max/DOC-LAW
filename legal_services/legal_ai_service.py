@@ -10,7 +10,7 @@ from legal_services.document_reader import collect_documents_from_dirs, collect_
 
 from legal_services.intake_service import load_ramas
 
-from legal_services.openai_service import chat_completion, is_configured, parse_json_response
+from legal_services.openai_service import active_model_label, chat_completion, is_configured, parse_json_response
 
 from legal_services.tenant_storage import _safe_name, tenant_root
 
@@ -220,7 +220,7 @@ def run_ai_analysis(tenant_id: str, caso: dict) -> dict:
 
             "ia_disponible": False,
 
-            "error": "Configure AZURE_OPENAI_API_KEY en el archivo .env para activar análisis con IA.",
+            "error": "IA no configurada. En GCP: LLM_PROVIDER=vertex y GCP_PROJECT. Local: Azure o Vertex en .env.",
 
         }
 
@@ -254,7 +254,7 @@ def run_ai_analysis(tenant_id: str, caso: dict) -> dict:
 
         "ia_disponible": True,
 
-        "modelo": __import__("os").environ.get("AZURE_OPENAI_DEPLOYMENT", "gpt-5.4-mini"),
+        "modelo": active_model_label(),
 
         "documentos_analizados": [d["nombre"] for d in documents],
 
