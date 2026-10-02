@@ -19,6 +19,7 @@ from legal_services.notificacion_template import (
 )
 from legal_services.public_url import public_app_base
 from legal_services.tenant_storage import _safe_name, tenant_root
+from legal_services.time_co import enrich_notificacion_display
 
 MAX_ADJUNTO_BYTES = 20 * 1024 * 1024
 
@@ -98,14 +99,15 @@ def list_notificaciones(tenant_id: str, case_id: str) -> list[dict]:
             items.append(json.loads(path.read_text(encoding="utf-8")))
         except json.JSONDecodeError:
             continue
-    return sorted(items, key=lambda x: x.get("enviado_en") or x.get("creado") or "", reverse=True)
+    ordered = sorted(items, key=lambda x: x.get("enviado_en") or x.get("creado") or "", reverse=True)
+    return [enrich_notificacion_display(x) for x in ordered]
 
 
 def _save_notificacion(tenant_id: str, case_id: str, record: dict) -> dict:
     folder = _notif_dir(tenant_id, case_id)
     path = folder / f"{_safe_name(record['id'])}.json"
     path.write_text(json.dumps(record, ensure_ascii=False, indent=2), encoding="utf-8")
-    return record
+    return enrich_notificacion_display(record)
 
 
 def _norm_rel_path(rel: str) -> str:

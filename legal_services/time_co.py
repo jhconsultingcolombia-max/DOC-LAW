@@ -37,3 +37,13 @@ def format_iso_colombia(iso: str | None, *, with_seconds: bool = False) -> str:
 def now_colombia_str(*, with_seconds: bool = False) -> str:
     fmt = "%d/%m/%Y %H:%M:%S" if with_seconds else "%d/%m/%Y %H:%M"
     return datetime.now(CO_TZ).strftime(fmt)
+
+
+def enrich_notificacion_display(record: dict) -> dict:
+    """Campos de solo lectura para la UI (no persistir en JSON del caso)."""
+    out = dict(record)
+    sent = record.get("enviado_en") or record.get("creado")
+    out["enviado_co"] = format_iso_colombia(sent) if sent else None
+    abierto = record.get("abierto_en")
+    out["abierto_co"] = format_iso_colombia(abierto) if abierto else None
+    return out

@@ -154,20 +154,30 @@
     return `${parts.day}/${parts.month}/${parts.year} ${parts.hour}:${parts.minute}`;
   }
 
+  function horaEnviado(n) {
+    return n.enviado_co || fmtFecha(n.enviado_en || n.creado);
+  }
+
+  function horaApertura(n) {
+    if (!n.abierto_en && !n.abierto_co) return "—";
+    return n.abierto_co || fmtFecha(n.abierto_en);
+  }
+
   function envioCell(n) {
     if (n.estado === "error") {
       return `<span class="notif-form-msg error">${escapeHtml(n.error_envio || "Error SMTP")}</span>`;
     }
     if (n.estado === "enviado") {
       const t = n.enviado_en || n.creado;
-      return t ? `<time datetime="${escapeHtml(t)}">${escapeHtml(fmtFecha(t))}</time>` : "—";
+      return t ? `<time datetime="${escapeHtml(t)}">${escapeHtml(horaEnviado(n))}</time>` : "—";
     }
     return "—";
   }
 
   function aperturaCell(n) {
-    if (!n.abierto_en) return "—";
-    return `<time datetime="${escapeHtml(n.abierto_en)}">${escapeHtml(fmtFecha(n.abierto_en))}</time>`;
+    if (!n.abierto_en && !n.abierto_co) return "—";
+    const t = n.abierto_en || "";
+    return `<time datetime="${escapeHtml(t)}">${escapeHtml(horaApertura(n))}</time>`;
   }
 
   function renderSummary(_items) {
@@ -320,7 +330,7 @@
     tbody.innerHTML = filtered
       .map(
         ({ n, idx }) => `<tr class="notif-row" data-idx="${idx}">
-          <td>${escapeHtml(fmtFecha(n.enviado_en || n.creado))}</td>
+          <td>${escapeHtml(horaEnviado(n))}</td>
           <td>${escapeHtml(n.para)}</td>
           <td>${escapeHtml(n.asunto)}${adjuntoSummary(n)}</td>
           <td>${envioCell(n)}</td>
